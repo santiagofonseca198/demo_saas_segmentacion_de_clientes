@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Oculta el indicador de desarrollo de Next.js para que no aparezca en una demo.
+  devIndicators: false,
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

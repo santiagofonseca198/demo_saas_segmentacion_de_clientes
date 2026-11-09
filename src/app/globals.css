@@ -1,26 +1,390 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-source-sans), "Segoe UI", system-ui, sans-serif;
+  --font-heading: var(--font-source-sans), "Segoe UI", system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Marca: toda la rampa sale de --brand-h (ver src/lib/theme/brand.ts) */
+  --color-brand-700: var(--brand-700);
+  --color-brand-600: var(--brand-600);
+  --color-brand-500: var(--brand-500);
+  --color-brand-200: var(--brand-200);
+  --color-brand-100: var(--brand-100);
+  --color-brand-50: var(--brand-50);
+  --color-lima: var(--lima);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-hairline: var(--hairline);
+
+  /* Estados: fijos, no cambian con la marca */
+  --color-ok: var(--ok);
+  --color-ok-texto: var(--ok-texto);
+  --color-alerta: var(--alerta);
+  --color-serio: var(--serio);
+  --color-critico: var(--critico);
+
+  /* Series de gráficas: orden fijo validado para daltonismo */
+  --color-serie-1: var(--serie-1);
+  --color-serie-2: var(--serie-2);
+  --color-serie-3: var(--serie-3);
+  --color-serie-4: var(--serie-4);
+  --color-serie-5: var(--serie-5);
+  --color-serie-6: var(--serie-6);
+  --color-neutro: var(--neutro);
 }
 
-@media (prefers-color-scheme: dark) {
+:root {
+  /* Lo que cambia por empresa (lo escribe <TemaDeMarca>) */
+  --brand-h: 166;
+  --fondo-intensidad: 0.55;
+  --alpha-marco: 0.62;
+
+  --alpha-datos: 0.86;
+  --alpha-flotante: 0.78;
+  --desenfoque-marco: 24px;
+  --desenfoque-flotante: 32px;
+
+  /* Luminosidad y saturación fijas: el contraste se mantiene con cualquier tono */
+  --brand-700: oklch(0.44 0.09 var(--brand-h));
+  --brand-600: oklch(0.52 0.105 var(--brand-h));
+  --brand-500: oklch(0.62 0.125 var(--brand-h));
+  --brand-200: oklch(0.9 0.05 var(--brand-h));
+  --brand-100: oklch(0.95 0.025 var(--brand-h));
+  --brand-50: oklch(0.975 0.012 var(--brand-h));
+  --lima: #b9e769;
+
+  --ink: oklch(0.264 0.038 calc(var(--brand-h) + 9));
+  --ink-2: oklch(0.478 0.037 calc(var(--brand-h) + 10));
+  --hairline: oklch(0.264 0.038 calc(var(--brand-h) + 9) / 0.1);
+
+  --lienzo: oklch(0.968 0.011 var(--brand-h));
+  --halo-1: oklch(0.912 0.048 calc(var(--brand-h) + 19));
+  --halo-2: oklch(0.921 0.034 calc(var(--brand-h) + 62));
+  --superficie-datos: oklch(0.983 0.007 var(--brand-h));
+
+  --ok: #0ca30c;
+  --ok-texto: #006300;
+  --alerta: #fab219;
+  --serio: #ec835a;
+  --critico: #d03b3b;
+
+  --serie-1: #129e74;
+  --serie-2: #2a78d6;
+  --serie-3: #eb6834;
+  --serie-4: #6250d6;
+  --serie-5: #eda100;
+  --serie-6: #e87ba4;
+  --neutro: #7c8b86;
+
+  --sombra-suave: 0 1px 2px oklch(0.264 0.038 175 / 0.04),
+    0 10px 28px -18px oklch(0.264 0.038 175 / 0.16);
+  --sombra-flotante: 0 2px 6px oklch(0.264 0.038 175 / 0.06),
+    0 24px 48px -20px oklch(0.264 0.038 175 / 0.28);
+
+  /* Variables que esperan los componentes de shadcn */
+  --background: var(--lienzo);
+  --foreground: var(--ink);
+  --card: var(--superficie-datos);
+  --card-foreground: var(--ink);
+  --popover: oklch(0.99 0.004 var(--brand-h));
+  --popover-foreground: var(--ink);
+  --primary: var(--brand-600);
+  --primary-foreground: #ffffff;
+  --secondary: var(--brand-100);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.264 0.038 calc(var(--brand-h) + 9) / 0.06);
+  --muted-foreground: var(--ink-2);
+  --accent: var(--brand-100);
+  --accent-foreground: var(--ink);
+  --destructive: #b42318;
+  --border: var(--hairline);
+  --input: oklch(0.264 0.038 calc(var(--brand-h) + 9) / 0.16);
+  --ring: var(--brand-500);
+  --chart-1: var(--serie-1);
+  --chart-2: var(--serie-2);
+  --chart-3: var(--serie-3);
+  --chart-4: var(--serie-4);
+  --chart-5: var(--serie-5);
+  --radius: 0.75rem;
+  --sidebar: transparent;
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--brand-600);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--brand-100);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--hairline);
+  --sidebar-ring: var(--brand-500);
+}
+
+/* Modo proyector: los proyectores lavan las transparencias */
+:root[data-proyector="true"] {
+  --alpha-marco: 0.96;
+  --alpha-datos: 1;
+  --alpha-flotante: 0.98;
+  --desenfoque-marco: 0px;
+  --desenfoque-flotante: 0px;
+  --fondo-intensidad: 0.25;
+  --ink-2: oklch(0.38 0.037 calc(var(--brand-h) + 10));
+  --hairline: oklch(0.264 0.038 calc(var(--brand-h) + 9) / 0.2);
+}
+
+@media (prefers-reduced-transparency: reduce) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --alpha-marco: 0.96;
+    --alpha-datos: 1;
+    --alpha-flotante: 0.98;
+    --desenfoque-marco: 0px;
+    --desenfoque-flotante: 0px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-contrast: more) {
+  :root {
+    --alpha-marco: 1;
+    --alpha-datos: 1;
+    --alpha-flotante: 1;
+    --desenfoque-marco: 0px;
+    --desenfoque-flotante: 0px;
+    --hairline: oklch(0.264 0.038 calc(var(--brand-h) + 9) / 0.45);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  :focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------- Fondo ---------- */
+
+.fondo-claro {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--lienzo);
+  background-image:
+    radial-gradient(
+      62vw 58vh at 6% -8%,
+      color-mix(in oklch, var(--halo-1) calc(var(--fondo-intensidad) * 100%), transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      58vw 60vh at 102% 108%,
+      color-mix(in oklch, var(--halo-2) calc(var(--fondo-intensidad) * 100%), transparent),
+      transparent 72%
+    );
+}
+
+/* ---------- Materiales ---------- */
+
+/* Vidrio de marco: barra lateral y barra superior */
+.vidrio-marco {
+  background: rgb(255 255 255 / var(--alpha-marco));
+  -webkit-backdrop-filter: blur(var(--desenfoque-marco)) saturate(140%);
+  backdrop-filter: blur(var(--desenfoque-marco)) saturate(140%);
+  border: 1px solid rgb(255 255 255 / 0.72);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    var(--sombra-suave);
+}
+
+/* Superficie de datos: casi opaca, el contraste del texto es predecible */
+.superficie-datos {
+  background: rgb(255 255 255 / var(--alpha-datos));
+  border: 1px solid rgb(255 255 255 / 0.85);
+  box-shadow: var(--sombra-suave);
+}
+
+/* Vidrio flotante: menús, hojas, panel de demo */
+.vidrio-flotante,
+[data-slot="select-content"],
+[data-slot="dropdown-menu-content"],
+[data-slot="popover-content"],
+[data-slot="sheet-content"] {
+  background: rgb(255 255 255 / var(--alpha-flotante));
+  -webkit-backdrop-filter: blur(var(--desenfoque-flotante)) saturate(150%);
+  backdrop-filter: blur(var(--desenfoque-flotante)) saturate(150%);
+  border: 1px solid rgb(255 255 255 / 0.8);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.9),
+    var(--sombra-flotante);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .vidrio-marco {
+    background: rgb(255 255 255 / 0.96);
+  }
+  .vidrio-flotante,
+  [data-slot="select-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="popover-content"],
+  [data-slot="sheet-content"] {
+    background: rgb(255 255 255 / 0.98);
+  }
+}
+
+/* La hoja lateral entra con una curva tipo resorte sin rebote */
+[data-slot="sheet-content"] {
+  transition-duration: 350ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ---------- Tipografía ---------- */
+
+/* Títulos grandes en peso ligero, como en la era Aero */
+.titulo-pagina {
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.cifra {
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Gráficas (Recharts) ---------- */
+
+.recharts-cartesian-axis-tick-value {
+  fill: var(--ink-2);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.recharts-cartesian-grid line {
+  stroke: var(--hairline);
+}
+
+/* Al hacer clic no se dibuja contorno; con teclado sí (lo pone :focus-visible). */
+.recharts-wrapper:focus:not(:focus-visible),
+.recharts-wrapper *:focus:not(:focus-visible) {
+  outline: none;
+}
+.recharts-wrapper:focus-visible,
+.recharts-wrapper *:focus-visible {
+  border-radius: 8px;
+}
+
+/* ---------- Movimiento ---------- */
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Una sola secuencia de entrada, al cargar el Resumen */
+.entrada > * {
+  animation: entrar 420ms cubic-bezier(0.32, 0.72, 0, 1) backwards;
+}
+.entrada > *:nth-child(2) {
+  animation-delay: 60ms;
+}
+.entrada > *:nth-child(3) {
+  animation-delay: 120ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entrada > * {
+    animation: none;
+  }
+  [data-slot="sheet-content"] {
+    transition-duration: 150ms;
+    translate: none !important;
+  }
+}
+
+/* ---------- Impresión de reportes ---------- */
+
+@media print {
+  .no-imprimir,
+  .fondo-claro {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  .superficie-datos,
+  .vidrio-marco {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .area-imprimible {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  @page {
+    margin: 18mm 16mm;
+  }
 }
