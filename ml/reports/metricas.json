@@ -1,0 +1,44 @@
+{
+  "segmentacion": {
+    "k": 4,
+    "silhouette": 0.2407,
+    "ari_bootstrap_medio": 0.8619,
+    "svm_rbf_f1_macro_test": 0.9801,
+    "svm_lineal_f1_macro_test": 0.9353,
+    "svm_C": 10.0,
+    "svm_gamma": 0.03,
+    "mantienen_segmento": 0.6419,
+    "hogares_por_segmento_fin": {
+      "fieles": 1232,
+      "prometedores": 219,
+      "enRiesgo": 687,
+      "dormidos": 331
+    }
+  },
+  "propension": {
+    "ventana_dias": 14,
+    "lgbm_roc_auc": 0.8668,
+    "lgbm_pr_auc": 0.9414,
+    "lgbm_brier": 0.1329,
+    "lgbm_log_loss": 0.4063,
+    "lgbm_tasa_base": 0.7065,
+    "lgbm_precision_banda_alta": 0.8684,
+    "lgbm_parte_banda_alta": 0.6788,
+    "lgbm_lift_decil_1": 1.4098,
+    "logistica_roc_auc": 0.8634,
+    "logistica_pr_auc": 0.9406,
+    "logistica_brier": 0.1355,
+    "logistica_log_loss": 0.4135,
+    "logistica_tasa_base": 0.7065,
+    "logistica_precision_banda_alta": 0.8611,
+    "logistica_parte_banda_alta": 0.6898,
+    "logistica_lift_decil_1": 1.4155,
+    "delta_auc_ic95": [
+      -0.0001,
+      0.0069
+    ],
+    "platt_a": 1.0042,
+    "platt_b": -0.0768,
+    "arboles": 192
+  }
+}
