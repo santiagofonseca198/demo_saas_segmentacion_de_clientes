@@ -66,7 +66,7 @@ export function hallazgos(ds: Dataset, filtros: Filtros, preset: Preset, formato
       tono: "positivo",
       texto: `${altas.length} ${plural(altas.length, cliente)} ${
         altas.length === 1 ? "tiene" : "tienen"
-      } probabilidad alta de comprar en los próximos 30 días, por un valor esperado de ${formato.moneda(
+      } probabilidad alta de comprar en los próximos ${ds.ventanaPropension} días, por un valor esperado de ${formato.moneda(
         esperado,
         { compacta: true },
       )}.`,

@@ -8,6 +8,6 @@ export const distribuidoraDemo: Preset = {
   rubro: "b2b",
   moneda: "USD",
   ...VALORES_POR_RUBRO.b2b,
-  datos: { semilla: 20293, clientes: 180, fechaReferencia: "2026-09-30" },
+  datos: { semilla: 20293, clientes: 180, fechaReferencia: "2026-09-30", fuente: "simulado" },
   apariencia: { fondo: 0.55, vidrio: 0.5, proyector: false },
 };

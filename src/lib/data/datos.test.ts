@@ -14,7 +14,8 @@ function suma(valores: number[]): number {
   return valores.reduce((total, v) => total + v, 0);
 }
 
-describe.each(PRESETS)("datos de $id", (preset) => {
+// El preset con datos reales tiene sus propios tests en real/cargar.test.ts.
+describe.each(PRESETS.filter((p) => p.datos.fuente === "simulado"))("datos de $id", (preset) => {
   const config = { rubro: preset.rubro, ...preset.datos, escala: MONEDAS[preset.moneda].escala };
   const ds = generarDataset(config);
 

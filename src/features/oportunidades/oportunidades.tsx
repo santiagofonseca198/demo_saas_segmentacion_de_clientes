@@ -84,7 +84,7 @@ export function Oportunidades() {
           nota={`De ${formato.numero(datos.clientes.length)} en total. Probabilidad de ${formato.porcentaje(CORTE_ALTA / 100)} o más.`}
         />
         <StatTile
-          etiqueta="Valor esperado en 30 días"
+          etiqueta={`Valor esperado en ${datos.ventanaDias} días`}
           valor={formato.moneda(datos.valorEsperadoAlta, { compacta: true })}
           formato={formato}
           nota="Si se cumplen las probabilidades del grupo de probabilidad alta."
@@ -124,14 +124,24 @@ export function Oportunidades() {
             <div className="mt-2 grid gap-2 text-ink-2">
               <p>
                 Un modelo de clasificación estima la probabilidad de que cada {cliente.singular} compre
-                en los próximos 30 días. Usa cinco señales: hace cuánto compró, cuántas veces compró en
-                el año, cuánto gastó, si responde a promociones y si viene comprando más o menos que
-                antes.
+                en los próximos {datos.ventanaDias} días. Usa cinco señales: hace cuánto compró, cuántas
+                veces compró en el año, cuánto gastó, si responde a promociones y si viene comprando más
+                o menos que antes.
               </p>
               <p>
                 El valor esperado es esa probabilidad multiplicada por el valor promedio de sus compras.
               </p>
-              <p>En esta demostración los datos y el modelo son simulados.</p>
+              {preset.datos.fuente === "dunnhumby" ? (
+                <p>
+                  Datos reales de dunnhumby (The Complete Journey, 2017). El modelo es un LightGBM
+                  entrenado con el historial de compras y probado con semanas que no vio: entre{" "}
+                  {cliente.genero === "f" ? "una" : "un"} {cliente.singular} que compró y{" "}
+                  {cliente.genero === "f" ? "una" : "uno"} que no, puntúa más alto al que compró 87 de cada
+                  100 veces (AUC 0,87).
+                </p>
+              ) : (
+                <p>En esta demostración los datos y el modelo son simulados.</p>
+              )}
             </div>
           </details>
         </DataCard>

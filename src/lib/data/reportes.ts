@@ -161,7 +161,7 @@ function resumenEjecutivo(ds: Dataset, preset: Preset, formato: Formato): Bloque
         )} de la base aporta el ${formato.porcentaje(fieles.parteVentas)} de las ventas.`,
         `Priorizar a ${altas.length} ${plural(altas.length, cliente)} con probabilidad alta de compra: el valor esperado es de ${formato.moneda(
           esperado,
-        )} en los próximos 30 días.`,
+        )} en los próximos ${ds.ventanaPropension} días.`,
       ],
     },
   ];
@@ -292,7 +292,7 @@ function planSemanal(ds: Dataset, preset: Preset, formato: Formato): Bloque[] {
   return [
     {
       tipo: "parrafo",
-      texto: `${altas.length} ${plural(altas.length, cliente)} tienen probabilidad alta de comprar en los próximos 30 días. Si se cumplen las probabilidades, representan ${formato.moneda(
+      texto: `${altas.length} ${plural(altas.length, cliente)} tienen probabilidad alta de comprar en los próximos ${ds.ventanaPropension} días. Si se cumplen las probabilidades, representan ${formato.moneda(
         esperado,
       )} en ventas.`,
     },

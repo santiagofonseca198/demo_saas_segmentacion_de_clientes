@@ -8,6 +8,6 @@ export const tiendaDemo: Preset = {
   rubro: "retail",
   moneda: "USD",
   ...VALORES_POR_RUBRO.retail,
-  datos: { semilla: 20279, clientes: 480, fechaReferencia: "2026-09-30" },
+  datos: { semilla: 20279, clientes: 480, fechaReferencia: "2026-09-30", fuente: "simulado" },
   apariencia: { fondo: 0.55, vidrio: 0.5, proyector: false },
 };

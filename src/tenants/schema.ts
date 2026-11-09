@@ -11,6 +11,9 @@ export const KPI_IDS = [
 export type KpiId = (typeof KPI_IDS)[number];
 
 export const RUBROS = ["retail", "b2b"] as const;
+/** De dónde salen los datos: generados en el navegador o exportados por los modelos de `ml/`. */
+export const FUENTES = ["simulado", "dunnhumby"] as const;
+export type FuenteDatos = (typeof FUENTES)[number];
 export type Rubro = (typeof RUBROS)[number];
 
 /**
@@ -72,6 +75,8 @@ export const esquemaPreset = z.object({
     clientes: z.number().int().min(60).max(1500),
     /** Último día con datos, en formato AAAA-MM-DD. */
     fechaReferencia: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Usa AAAA-MM-DD"),
+    /** Los presets guardados antes de existir este campo son simulados. */
+    fuente: z.enum(FUENTES).default("simulado"),
   }),
   apariencia: z.object({
     /** 0 = fondo plano, 1 = halos de luz más visibles. */

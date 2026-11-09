@@ -65,7 +65,7 @@ export function Segmentos() {
                 {formato.porcentaje(segmento.parteClientes)} de {los(cliente)},{" "}
                 {formato.porcentaje(segmento.parteVentas)} de las ventas
               </span>
-              <span className="mt-3 text-sm">{descripcionSegmento(segmento.id)}</span>
+              <span className="mt-3 text-sm">{descripcionSegmento(segmento.id, preset.datos.fuente)}</span>
               <span className="mt-3 border-t border-hairline pt-3 text-sm">
                 <span className="font-semibold">Qué hacer: </span>
                 {accionSegmento(segmento.id)}
@@ -120,16 +120,33 @@ export function Segmentos() {
           <details className="mt-auto border-t border-hairline pt-4 text-sm">
             <summary className="cursor-pointer font-semibold">Cómo se calculó</summary>
             <div className="mt-2 grid gap-2 text-ink-2">
-              <p>
-                Un algoritmo de agrupamiento (K-means, con cuatro grupos) reúne a {los(cliente)} que se
-                parecen en tres cosas: hace cuánto compraron, cuántas veces compraron en el año y cuánto
-                gastaron.
-              </p>
-              <p>
-                El algoritmo solo forma los grupos. Los nombres y las acciones sugeridas se definen con
-                el negocio.
-              </p>
-              <p>En esta demostración los datos y los grupos son simulados.</p>
+              {preset.datos.fuente === "dunnhumby" ? (
+                <>
+                  <p>
+                    Un algoritmo de agrupamiento (K-means, con cuatro grupos) reunió a {los(cliente)}{" "}
+                    que se parecen en hace cuánto compraron, cuántas veces y cuánto gastaron en el año,
+                    su compra promedio y si vienen comprando más o menos que antes.
+                  </p>
+                  <p>
+                    Después, un segundo modelo (SVM) aprendió esos grupos y asigna a cada{" "}
+                    {cliente.singular} el suyo con los datos más recientes, sin rehacer los grupos.
+                  </p>
+                  <p>Datos reales de dunnhumby (The Complete Journey, 2017).</p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    Un algoritmo de agrupamiento (K-means, con cuatro grupos) reúne a {los(cliente)} que
+                    se parecen en tres cosas: hace cuánto compraron, cuántas veces compraron en el año y
+                    cuánto gastaron.
+                  </p>
+                  <p>
+                    El algoritmo solo forma los grupos. Los nombres y las acciones sugeridas se definen
+                    con el negocio.
+                  </p>
+                  <p>En esta demostración los datos y los grupos son simulados.</p>
+                </>
+              )}
             </div>
           </details>
         </DataCard>

@@ -207,6 +207,7 @@ export function generarDataset(config: ConfigDatos): Dataset {
   return {
     rubro: config.rubro,
     fechaReferencia: config.fechaReferencia,
+    ventanaPropension: 30,
     productos,
     clientes,
     pedidos,

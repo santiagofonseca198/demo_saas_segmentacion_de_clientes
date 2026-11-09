@@ -15,6 +15,7 @@ import {
 } from "./consultas";
 import { hallazgos, type Hallazgo } from "./hallazgos";
 import { generarDataset } from "./mock/generador";
+import { cargarDunnhumby } from "./real/cargar";
 import { generarReporte, type Reporte, type TipoReporte } from "./reportes";
 import type {
   Barra,
@@ -28,18 +29,29 @@ import type {
 
 /**
  * Única puerta de acceso a los datos. Las pantallas solo llaman a estas
- * funciones; hoy responden con datos generados y, cuando exista el backend,
- * cada una pasa a ser una llamada a la API sin tocar las pantallas.
+ * funciones; responden con datos generados en el navegador o con los datos
+ * reales que exportan los modelos de `ml/`, según `preset.datos.fuente`.
+ * Cuando exista el backend, cada una pasa a ser una llamada a la API sin
+ * tocar las pantallas.
  */
 
-const datasets = new Map<string, Dataset>();
+const datasets = new Map<string, Promise<Dataset>>();
 
-function datasetDe(preset: Preset): Dataset {
+function datasetDe(preset: Preset): Promise<Dataset> {
   const { rubro, moneda, datos } = preset;
-  const clave = [rubro, moneda, datos.semilla, datos.clientes, datos.fechaReferencia].join("|");
+  const escala = MONEDAS[moneda].escala;
+  const clave =
+    datos.fuente === "simulado"
+      ? [rubro, moneda, datos.semilla, datos.clientes, datos.fechaReferencia].join("|")
+      : [datos.fuente, moneda].join("|");
   let ds = datasets.get(clave);
   if (!ds) {
-    ds = generarDataset({ rubro, ...datos, escala: MONEDAS[moneda].escala });
+    ds =
+      datos.fuente === "simulado"
+        ? Promise.resolve(generarDataset({ rubro, ...datos, escala }))
+        : cargarDunnhumby(escala);
+    // Si la descarga falla, no se guarda el error: el siguiente intento vuelve a pedirla.
+    ds.catch(() => datasets.delete(clave));
     if (datasets.size >= 6) datasets.delete(datasets.keys().next().value!);
     datasets.set(clave, ds);
   }
@@ -94,16 +106,19 @@ export interface DatosOportunidades {
   /** Probabilidad media de la banda alta: "de cada 10, compran N". */
   aciertoBandaAlta: number;
   valorEsperadoAlta: number;
+  /** Días hacia adelante que mira la probabilidad de compra. */
+  ventanaDias: number;
 }
 
 export interface DatosCliente {
   cliente: Cliente;
   historial: PuntoSerie[];
+  ventanaDias: number;
 }
 
 export const repositorio = {
   async catalogo(preset: Preset): Promise<Catalogo> {
-    const ds = datasetDe(preset);
+    const ds = await datasetDe(preset);
     return {
       zonas: ds.zonas,
       canales: ds.canales,
@@ -113,7 +128,7 @@ export const repositorio = {
   },
 
   async resumen(preset: Preset, filtros: Filtros): Promise<DatosResumen> {
-    const ds = datasetDe(preset);
+    const ds = await datasetDe(preset);
     return {
       kpis: calcularKpis(ds, filtros, preset.kpis),
       serie: serieVentas(ds, filtros),
@@ -125,7 +140,7 @@ export const repositorio = {
   },
 
   async ventas(preset: Preset, filtros: Filtros): Promise<DatosVentas> {
-    const ds = datasetDe(preset);
+    const ds = await datasetDe(preset);
     const clientes = clientePorId(ds);
     const pedidos = pedidosEn(ds, rangos(filtros.periodo).actual, filtros.zona);
     return {
@@ -150,12 +165,12 @@ export const repositorio = {
   },
 
   async segmentos(preset: Preset): Promise<DatosSegmentos> {
-    const ds = datasetDe(preset);
+    const ds = await datasetDe(preset);
     return { segmentos: resumenSegmentos(ds), clientes: ds.clientes };
   },
 
   async oportunidades(preset: Preset): Promise<DatosOportunidades> {
-    const ds = datasetDe(preset);
+    const ds = await datasetDe(preset);
     const altas = ds.clientes.filter((c) => c.propension.banda === "alta");
     return {
       clientes: oportunidades(ds),
@@ -164,16 +179,19 @@ export const repositorio = {
         ? altas.reduce((suma, c) => suma + c.propension.puntaje, 0) / altas.length / 100
         : 0,
       valorEsperadoAlta: altas.reduce((suma, c) => suma + c.propension.valorEsperado, 0),
+      ventanaDias: ds.ventanaPropension,
     };
   },
 
   async cliente(preset: Preset, id: string): Promise<DatosCliente | null> {
-    const ds = datasetDe(preset);
+    const ds = await datasetDe(preset);
     const cliente = clientePorId(ds).get(id);
-    return cliente ? { cliente, historial: historialCliente(ds, id) } : null;
+    return cliente
+      ? { cliente, historial: historialCliente(ds, id), ventanaDias: ds.ventanaPropension }
+      : null;
   },
 
   async reporte(preset: Preset, tipo: TipoReporte): Promise<Reporte> {
-    return generarReporte(datasetDe(preset), preset, crearFormato(preset.moneda), tipo);
+    return generarReporte(await datasetDe(preset), preset, crearFormato(preset.moneda), tipo);
   },
 };

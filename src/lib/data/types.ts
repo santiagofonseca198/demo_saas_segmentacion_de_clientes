@@ -38,7 +38,7 @@ export interface Factor {
 }
 
 export interface Propension {
-  /** Probabilidad de compra en los próximos 30 días, de 0 a 100. */
+  /** Probabilidad de compra en los próximos `Dataset.ventanaPropension` días, de 0 a 100. */
   puntaje: number;
   banda: Banda;
   valorEsperado: number;
@@ -71,6 +71,8 @@ export interface Cliente {
 export interface Dataset {
   rubro: Rubro;
   fechaReferencia: string;
+  /** Días hacia adelante que mira la propensión. */
+  ventanaPropension: number;
   productos: Producto[];
   clientes: Cliente[];
   /** Ordenados por día. */

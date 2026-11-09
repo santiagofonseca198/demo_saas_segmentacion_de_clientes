@@ -1,5 +1,5 @@
 import type { Formato } from "@/lib/format";
-import type { Preset } from "@/tenants/schema";
+import type { FuenteDatos, Preset } from "@/tenants/schema";
 import type { Banda, Cliente, Factor, SegmentoId } from "./types";
 
 type Vocabulario = Preset["vocabulario"];
@@ -67,7 +67,20 @@ export function accionSugerida(cliente: Cliente): string {
   return "Mantener en la comunicación general";
 }
 
-export function descripcionSegmento(id: SegmentoId): string {
+/**
+ * Con datos reales los segmentos salen del clustering, no de reglas fijas, y
+ * sus perfiles son otros (en un supermercado se vuelve cada pocos días): se
+ * describen según lo que el modelo encontró (ml/notebooks/02_segmentacion_svm).
+ */
+const DESCRIPCION_REAL: Record<SegmentoId, string> = {
+  fieles: "Compran casi a diario y hace poco. Sostienen la mayor parte de las ventas.",
+  prometedores: "Todavía compran poco, pero su ritmo de compra se está acelerando.",
+  enRiesgo: "Compran con regularidad, pero menos que hace tres meses.",
+  dormidos: "Hace semanas que no vuelven y, cuando venían, compraban poco.",
+};
+
+export function descripcionSegmento(id: SegmentoId, fuente: FuenteDatos = "simulado"): string {
+  if (fuente !== "simulado") return DESCRIPCION_REAL[id];
   switch (id) {
     case "fieles":
       return "Compran seguido y hace poco. Sostienen buena parte de las ventas.";

@@ -1,5 +1,6 @@
 import type { Preset } from "./schema";
 import { distribuidoraDemo } from "./presets/distribuidora-demo";
+import { dunnhumby } from "./presets/dunnhumby";
 import { tiendaDemo } from "./presets/tienda-demo";
 
 /**
@@ -7,7 +8,7 @@ import { tiendaDemo } from "./presets/tienda-demo";
  * copia un archivo de `presets/`, cambia sus valores y agrégalo aquí.
  * Se abre con `?empresa=<id>` o desde el panel de demo.
  */
-export const PRESETS: Preset[] = [tiendaDemo, distribuidoraDemo];
+export const PRESETS: Preset[] = [tiendaDemo, distribuidoraDemo, dunnhumby];
 
 export const PRESET_POR_DEFECTO = tiendaDemo;
 

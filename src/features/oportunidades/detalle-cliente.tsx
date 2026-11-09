@@ -51,7 +51,7 @@ function Detalle({ datos }: { datos: DatosCliente }) {
       <div className="grid gap-6 overflow-y-auto px-6 pb-6">
         <section className="flex items-end justify-between gap-4 border-b border-hairline pb-5">
           <div>
-            <h3 className="text-sm text-ink-2">Probabilidad de compra en 30 días</h3>
+            <h3 className="text-sm text-ink-2">Probabilidad de compra en {datos.ventanaDias} días</h3>
             <p className="cifra mt-1 text-[2.75rem]">{formato.porcentaje(propension.puntaje / 100)}</p>
           </div>
           <div className="pb-1 text-right">

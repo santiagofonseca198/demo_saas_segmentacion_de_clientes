@@ -449,25 +449,35 @@ function Contenido() {
         </div>
       </Grupo>
 
-      <Grupo titulo="Datos de ejemplo">
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="outline"
-            onClick={() =>
-              cambiar((p) => ({
-                datos: { ...p.datos, semilla: Math.floor(Math.random() * 1_000_000) },
-              }))
-            }
-          >
-            <Shuffle aria-hidden />
-            Generar otros datos
-          </Button>
-        </div>
-        <p className="text-sm text-ink-2">
-          Los datos son ficticios. Cada semilla produce siempre las mismas cifras; la actual es{" "}
-          <span className="tabular">{preset.datos.semilla}</span>.
-        </p>
-      </Grupo>
+      {preset.datos.fuente === "dunnhumby" ? (
+        <Grupo titulo="Datos reales">
+          <p className="text-sm text-ink-2">
+            Compras de 2017 de una muestra de hogares de dunnhumby (The Complete Journey). Los
+            segmentos y las probabilidades vienen de los modelos de la carpeta{" "}
+            <span className="font-mono">ml/</span> del proyecto.
+          </p>
+        </Grupo>
+      ) : (
+        <Grupo titulo="Datos de ejemplo">
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              onClick={() =>
+                cambiar((p) => ({
+                  datos: { ...p.datos, semilla: Math.floor(Math.random() * 1_000_000) },
+                }))
+              }
+            >
+              <Shuffle aria-hidden />
+              Generar otros datos
+            </Button>
+          </div>
+          <p className="text-sm text-ink-2">
+            Los datos son ficticios. Cada semilla produce siempre las mismas cifras; la actual es{" "}
+            <span className="tabular">{preset.datos.semilla}</span>.
+          </p>
+        </Grupo>
+      )}
 
       <Grupo titulo="Guardar y cargar">
         <div className="flex flex-wrap gap-2">

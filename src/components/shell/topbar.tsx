@@ -92,7 +92,8 @@ export function Topbar() {
       {listo && (
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
           <p className="text-sm text-ink-2">
-            Datos al {formato.fecha(fechaDeDia(ULTIMO_DIA, preset.datos.fechaReferencia), "larga")}
+            {preset.datos.fuente === "dunnhumby" ? "Datos reales de dunnhumby al " : "Datos al "}
+            {formato.fecha(fechaDeDia(ULTIMO_DIA, preset.datos.fechaReferencia), "larga")}
           </p>
           {seccion?.conFiltros && <Filtros />}
         </div>
