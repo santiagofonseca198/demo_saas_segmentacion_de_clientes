@@ -2,8 +2,8 @@
 
 Demo de un SaaS de analítica para PYMEs. Responde dos preguntas: **qué tipos de clientes tiene el negocio** y **quién va a volver a comprar pronto**. Funciona con dos fuentes de datos:
 
-- **Datos reales:** un año de compras de un supermercado (dunnhumby *The Complete Journey*). Los segmentos salen de **K-Means + SVM** y la propensión de compra de **LightGBM**, entrenados y evaluados en [`ml/`](ml/). Se abre con `/resumen?empresa=dunnhumby`.
-- **Datos simulados:** presets de empresas ficticias para mostrarle a cada cliente cómo se vería el producto con su nombre, su color y su vocabulario.
+- **Datos reales:** un año de compras de un supermercado (dunnhumby *The Complete Journey*). Los segmentos salen de **K-Means + SVM** y la propensión de compra de **LightGBM**, entrenados y evaluados en [`ml/`](ml/). Es lo que se ve al abrir la app.
+- **Datos simulados:** presets de empresas ficticias para mostrarle a cada cliente cómo se vería el producto con su nombre, su color y su vocabulario. Se eligen en el panel de demo (Ctrl + punto) o con `?empresa=tienda-demo`.
 
 ![Resumen con datos reales de dunnhumby](docs/capturas/resumen-dunnhumby.png)
 

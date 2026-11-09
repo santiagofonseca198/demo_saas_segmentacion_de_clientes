@@ -5,7 +5,7 @@ Ciencia de datos detrás del dashboard. Se trabaja con datos reales de un superm
 1. **¿Qué tipos de clientes tengo?** K-Means descubre cuatro segmentos y un **SVM** asigna cada hogar a su segmento con datos nuevos.
 2. **¿Quién va a volver a comprar pronto?** **LightGBM** estima la probabilidad de compra en los próximos 14 días y SHAP explica cada puntaje.
 
-Los resultados se exportan a `public/data/dunnhumby.json` y la app los muestra en el preset **"Supermercado dunnhumby"** (`/resumen?empresa=dunnhumby`).
+Los resultados se exportan a `public/data/dunnhumby.json` y la app los muestra en el preset **"Supermercado dunnhumby"**, que es el que abre la app por defecto.
 
 ## Notebooks
 
