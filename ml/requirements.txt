@@ -1,0 +1,18 @@
+# Versiones con las que se ejecutaron los notebooks (Python 3.12).
+ipykernel==7.4.0
+joblib==1.6.0
+jupyter==1.1.1
+jupytext==1.19.6
+lightgbm==4.7.0
+matplotlib==3.11.2
+nbconvert==7.17.2
+numpy==2.5.4
+optuna==5.0.0
+pandas==3.1.1
+pyarrow==26.0.1
+pyreadr==0.5.9
+pytest==9.2.0
+ruff==0.17.4
+scikit-learn==1.9.1
+scipy==1.18.1
+shap==0.54.1

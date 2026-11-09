@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ciencia de datos (ml/)
+ml/.venv/
+ml/data/
+ml/models/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/

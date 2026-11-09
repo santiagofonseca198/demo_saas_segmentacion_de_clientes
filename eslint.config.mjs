@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Ciencia de datos en Python (incluye el entorno virtual).
+    "ml/**",
   ]),
 ]);
 
